@@ -15,3 +15,8 @@ CountChars: Count the total number of characters in the tree. For the above exam
 Reconstruct: Generate an array of all strings entered into the tree.
 
 Complete: This is the classic autocomplete function. Given a partial word, the tree will return all words in the tree that can be made with that partial. If we call tree.complete('toni') on the example above, it will return ['tonight']. 
+
+Radix Document
+--------------
+
+Radix document is an experimental variation on the prefix-tree, its documentInsert() function takes a string containing the text of a document. The string is turned into an array, sorted by word length and then stored in the tree. After a document is stored, it can be reconstructed in its original form by calling reconstruct().
