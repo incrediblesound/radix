@@ -3,13 +3,13 @@ Radix - A Compact Prefix Tree
 
 Compact prefix trees store strings efficiently by storing only the difference between
 each insertion and the current content of the tree. If we initialize the tree and then add the strings "to", "ton", "tone", and "tonight" in order, our tree will look like this:
-        Root ('')
-           |
-      Child ('to')
-           |
-      Child ('n')
-      |         |
-Child('ight')  Child('e')
+        Root ('')    
+           |    
+      Child ('to')    
+           |    
+      Child ('n')    
+      |         |    
+Child('ight')  Child('e')    
 
 The Radix constructor current has the following functions:    
 
