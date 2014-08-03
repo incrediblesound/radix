@@ -70,25 +70,25 @@ Radix.prototype.reconstruct = function(value){
 
 // This is the classic autocomplete function. Given a partial word, the tree returns
 // a list of all the words that can be completed with that partial.
-Radix.prototype.complete = function(target, current){
+Radix.prototype.complete = function(target, previous){
+  var current;
   if(current === undefined){
-      current = this.value;
-  } else {
-      var previous = current;
-      current = current + this.value;
+    current = this.value;
   }
-  var tst = new RegExp('^'+target+'\.*');
-  if(tst.test(current)){
-    return this.reconstruct(previous);
-  } else {
-    var node, chk;
-    for(var i = 0; i < this.children.length; i++){
-      node = this.children[i];
-      chk = new RegExp('^'+current+'\.*');
+  if(previous){
+    current = previous + this.value;   
+  }
+  for(var i = 0; i < this.children.length; i++){
+      var node = this.children[i];
+      var chk = new RegExp('^'+current+node.value+'\.*');
+      var tst = new RegExp('^'+target+'\.*');
       if(chk.test(target)){
         return node.complete(target, current);
       }
-    }
+      else if(tst.test(current+node.value)){
+        return node.reconstruct(current);
+      }
   }
   return null;
 };
+
