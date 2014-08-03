@@ -6,7 +6,9 @@ each insertion and the current content of the tree. If we initialize the tree an
 
 The Radix constructor currently has the following functions:    
 
-Insert: Insert a new string into the tree
+Insert: Insert a new string into the tree.
+
+Contains: Check to see if a given string has been stored in the tree.
 
 CountChars: Count the total number of characters in the tree. For the above example countChars would return '8', which is half of the total number of characters entered into the tree.
 
