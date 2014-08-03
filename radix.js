@@ -47,6 +47,25 @@ Radix.prototype.countChars = function(){
   return count;
 };
 
+// check to see if a given string is in the
+Radix.prototype.contains = function(target, current){
+  if (current === undefined) {
+    current = this.value;
+  } 
+  var node, chk, newVal;
+  for(var i = 0; i < this.children.length; i++) {
+    node = this.children[i];
+    newVal = current + node.value;
+    if( newVal === target) { return true; }
+
+    chk = new RegExp('^'+newVal+'\.*');
+    if(chk.test(target)) {
+      return node.contains(target, newVal);
+    }
+  }
+  return false;
+};
+
 // this function constructs a list of all the words stored in the tree
 Radix.prototype.reconstruct = function(value){
   var result = [];
@@ -71,7 +90,7 @@ Radix.prototype.reconstruct = function(value){
 // This is the classic autocomplete function. Given a partial word, the tree returns
 // a list of all the words that can be completed with that partial.
 Radix.prototype.complete = function(target, previous){
-  var current;
+  var result = [], current;
   if(current === undefined){
     current = this.value;
   }
@@ -86,9 +105,9 @@ Radix.prototype.complete = function(target, previous){
         return node.complete(target, current);
       }
       else if(tst.test(current+node.value)){
-        return node.reconstruct(current);
+        result = result.concat(node.reconstruct(current));
       }
   }
-  return null;
+  return result;
 };
 
