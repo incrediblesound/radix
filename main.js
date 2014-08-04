@@ -24,7 +24,7 @@ Radix.prototype.insert = function(obj){
   for(var i = 0; i < this.children.length; i++) {
     // store the current child and a regex containing its value
     node = this.children[i];
-    var testString = node.value.replace(/\./g, '\\.');
+    var testString = node.value.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
     tst = new RegExp('^'+testString+'.*');
     // if the current child node's string is found in the input value, start over from that node
     if( tst.test(obj.string) ){
