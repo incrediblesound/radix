@@ -19,16 +19,15 @@ Radix.prototype.insert = function(obj){
   if (this.value === obj.string) { 
     this.locations.push(obj.index); 
   }
-
   var node, tst;
   // otherwise iterate through the child nodes
   for(var i = 0; i < this.children.length; i++) {
-
     // store the current child and a regex containing its value
     node = this.children[i];
-    tst = new RegExp('^'+node.value+'\.*');
+    var testString = node.value.replace(/\./g, '\\.');
+    tst = new RegExp('^'+testString+'.*');
     // if the current child node's string is found in the input value, start over from that node
-    if(tst.test(obj.string)){
+    if( tst.test(obj.string) ){
       var l = node.value.length;
       // we only pass on the difference between our input and the current node's value
       obj.string = obj.string.substring(l, obj.string.length);
@@ -78,7 +77,6 @@ Radix.prototype.reconstruct = function(value){
   var result = [];
 
   var search = function(context, value){
-    console.log(context);
     if (value !== undefined){
     value = value + context.value;
     } else {
@@ -125,50 +123,15 @@ Radix.prototype.complete = function(target, previous){
   return result;
 };
 
-Radix.prototype.sortedInsert = function(array){
-
-  var sort = function(left, right) {
-    var result = [];
-    while(left.length && right.length){
-      if(left[0].length <= right[0].length){
-        result.push(left.shift());
-      } else {
-        result.push(right.shift());
-      }
-    }
-    while(left.length){
-      result.push(left.shift());
-    }
-    while(right.length){
-      result.push(right.shift());
-    }
-    return result;
-  };
-
-  var merge = function(array){
-    if(array.length < 2) {
-      return array;
-    }
-    var mid = Math.floor(array.length/2);
-    var left = array.slice(0, mid);
-    var right = array.slice(mid, array.length);
-    return sort(merge(left), merge(right));
-  };
-
-  var sorted = merge(array);
-  console.log(sorted);
-  for(var i = 0; i < sorted.length; i++){
-    this.insert(sorted[i]);
-  }
-};
-
 Radix.prototype.documentInsert = function(string){
 
-  var array = string.split(' ');
-  for(var k = 0; k < array.length; k ++) {
-    array[k] = { string: array[k], index: k };
+  var splitString = string.split(' ');
+  var array = [];
+  for(var k = 0; k < splitString.length; k ++) {
+    if(splitString[k].length > 0){
+      array.push({ string: splitString[k], index: k });
+    }
   }
-
   var sort = function(left, right) {
     var result = [];
     while(left.length && right.length){
@@ -198,7 +161,6 @@ Radix.prototype.documentInsert = function(string){
   };
 
   var sorted = merge(array);
-  console.log(sorted);
   for(var i = 0; i < sorted.length; i++){
     this.insert(sorted[i]);
   }
