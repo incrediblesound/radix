@@ -2,21 +2,22 @@ Radix - A Compact Prefix Tree
 =============================
 
 Compact prefix trees store strings efficiently by storing only the difference between
-each insertion and the current content of the tree. If we initialize the tree and then add the strings "to", "ton", "tone", and "tonight" in order, our tree will only save 'to', 'n', 'e', and 'ight' in a way that the original input can be reconstructed by traversing the tree.   
+each insertion and the current content of the tree. If we initialize a tree and then add the strings "to", "ton", "tone", and "tonight" in order, our tree will only save 'to', 'n', 'e', and 'ight' in such a way that the original input can be reconstructed by traversing the tree.   
 
-The Radix constructor currently has the following functions:    
+Radix-compressor is a variation of my original radix prefix tree project. Radix-compressor exposes a documentInsert() method that takes a string, presumably representing a document to be compressed, as its only parameter. Radix-compressor takes the string, turns it into an array, sorts the array by word length, and then inserts each word into a prefix tree while saving the original position of each word in the document. The input string can be recovered using the reconstruct() method on the tree.
 
-Insert: Insert a new string into the tree.
+Repeated words are not saved, their location is simply added to the node of the tree representing that word. In addition, variations of individual words are stored as difference trees in the way described above, resulting in some pretty sweet compression. I have observed compression rates with long strings around 2:1, but I encourage folks to check the results of using this algorithm with the supplied countChars() method that counts the total number of characters stored in the tree.
 
-Contains: Check to see if a given string has been stored in the tree.
+Use example:
+-----------
 
-CountChars: Count the total number of characters in the tree. For the above example countChars would return '8', which is half of the total number of characters entered into the tree.
+```javascript
+var Radix = require('radix-compression');
+var tree = new Radix();
 
-Reconstruct: Generate an array of all strings entered into the tree.
+tree.documentInsert('Welcome to the future of cool npm modules.');
 
-Complete: This is the classic autocomplete function. Given a partial word, the tree will return all words in the tree that can be made with that partial. If we call tree.complete('toni') on the example above, it will return ['tonight']. 
+tree.countChars() //=> 34
 
-Radix Document
---------------
-
-Radix document is an experimental variation on the prefix-tree, its documentInsert() function takes a string containing the text of a document. The string is turned into an array, sorted by word length and then stored in the tree. After a document is stored, it can be reconstructed in its original form by calling reconstruct().
+tree.reconstruct() //=> 'Welcome to the future of cool npm modules.'
+```
