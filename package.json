@@ -1,7 +1,7 @@
 {
     "name": "radix-compression",
     "version": "0.0.1",
-    "description": "Uses a prefix tree to compress strings",
+    "description": "A prefix tree for compressing long strings",
     "main": "main.js",
     "author": "James H. Edwards",
     "keywords": ["Compression","Algorithm","Prefix","Tree"],
