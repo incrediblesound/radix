@@ -19,4 +19,7 @@ Complete: This is the classic autocomplete function. Given a partial word, the t
 Radix Document
 --------------
 
-Radix document is an experimental variation on the prefix-tree, its documentInsert() function takes a string containing the text of a document. The string is turned into an array, sorted by word length and then stored in the tree. After a document is stored, it can be reconstructed in its original form by calling reconstruct().
+Radix document is an experimental variation on the prefix-tree, its documentInsert() function takes a string containing the text of a document. The string is turned into an array, sorted by word length and then stored in the tree. After a document is stored, it can be reconstructed in its original form by calling reconstruct(). Because the prefx-tree elminiates redundant information, this effectively turns the function into a string compression algorithm. The node.js version of this algorithm is available on npm, to install:    
+```shell
+npm install radix-compression
+```
